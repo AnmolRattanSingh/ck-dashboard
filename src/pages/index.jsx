@@ -1,6 +1,6 @@
-export { default as Orders } from './Orders';
-export { default as Employees } from './Employees';
-export { default as Customers } from './Customers';
+export { default as NewRides } from './NewRides';
+export { default as Drivers } from './Drivers';
+export { default as Riders } from './Riders';
 export { default as Calendar } from './Calendar';
 export { default as Area } from './Charts/Area';
 export { default as Bar } from './Charts/Bar';

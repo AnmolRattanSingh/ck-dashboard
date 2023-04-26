@@ -4,24 +4,28 @@ import { FiSettings } from 'react-icons/fi'
 import { Tooltip } from 'antd'
 
 import { Navbar, Footer, Sidebar, ThemeSettings } from './components'
-import { CK, Orders, Calendar, Employees, Customers, Area, Bar, Line, Pie } from './pages'
+import { CK, NewRides, Calendar, Drivers, Riders, Area, Bar, Line, Pie } from './pages'
+
+import { useStateContext } from './contexts/ContextProvider'
+
 import './App.css'
 
 const App = () => {
-  const [activeMenu, setActiveMenu] = useState(true)
+  const { activeMenu } = useStateContext()
   return (
     <div>
       <BrowserRouter>
         <div className="flex relative dark:bg-main-dark-bg">
           <div className="fixed right-4 bottom-4" style={{ zIndex: "1000" }}>
             <Tooltip title="Settings" placement='top'>
-              <button type="button" 
-              className='rounded-full p-1 
-              hover:bg-light-gray 
-              focus:outline-none 
-              focus:ring 
-              focus:ring-black'
-              onClick={() => {setActiveMenu(false)}}>
+              <button 
+                type="button" 
+                className='rounded-full p-1 
+                hover:bg-light-gray 
+                focus:outline-none 
+                focus:ring 
+                focus:ring-black'
+              >
                 <FiSettings size={30} />
               </button>
             </Tooltip>
@@ -34,30 +38,40 @@ const App = () => {
                 <Sidebar />
               </div>
             )}
-            {/* <div className={
-              `dark.bg-main-bg bg-main-bg min-h-screen w-full ${
+            <div className={
+              `dark:bg-main-bg bg-main-bg min-h-screen w-full ${
                 activeMenu ? 
-                "md:ml-72" : 
+                "md:ml-12" : 
                 "flex-2"
               }`
             }>
-              <div className='fixed bg-main-g dark:bg-main-dark
+              <div className='fixed md:static bg-main-g dark:bg-main-dark
               navbar w-full'>
                 <Navbar />
               </div>
-            </div> */}
-
+            </div>
             <div>
               <Routes>
-                {/* main page */}
+                {/* Dashboard */}
                 <Route path='/' element={<CK />} />
-                <Route path='/orders' element={<Orders />} />
+                <Route path='/rides' element={<CK />} />
 
-                {/* pages */}
+                {/* Schedule */}
+                <Route path='/new rides' element={<NewRides />} />
+                <Route path='/drivers' element={<Drivers />} />
+                <Route path='/riders' element={<Riders />} />
+
+                {/* Apps */}
                 <Route path='/calendar' element={<Calendar />} />
+                <Route path='/kanban' element={<Calendar />} />
+
+                {/* Charts */}
+                <Route path='/area' element={<Area />} />
+                <Route path='/bar' element={<Bar />} />
+                <Route path='/line' element={<Line />} />
+                <Route path='/pie' element={<Pie />} />
               </Routes>
             </div>
-
           </div>
         </div>
       </BrowserRouter>
