@@ -18,8 +18,8 @@ const App = () => {
         <div className="flex relative dark:bg-main-dark-bg">
           <div className="fixed right-4 bottom-4" style={{ zIndex: "1000" }}>
             <Tooltip title="Settings" placement='top'>
-              <button 
-                type="button" 
+              <button
+                type="button"
                 className='rounded-full p-1 
                 hover:bg-light-gray 
                 focus:outline-none 
@@ -29,26 +29,25 @@ const App = () => {
                 <FiSettings size={30} />
               </button>
             </Tooltip>
-            {activeMenu ? (
-              <div className='w-72 top-2 left-2 fixed sidebar dark:bg-secondary-dark-bg bg-white'>
-                <Sidebar />
-              </div>
-            ) : (
-              <div className='w-0 top-2 left-2 fixed sidebar dark:bg-secondary-dark-bg bg-white'>
-                <Sidebar />
-              </div>
-            )}
-            <div className={
-              `dark:bg-main-bg bg-main-bg min-h-screen w-full ${
-                activeMenu ? 
-                "md:ml-12" : 
-                "flex-2"
-              }`
-            }>
-              <div className='fixed md:static bg-main-g dark:bg-main-dark
+          </div>
+          {activeMenu ? (
+            <div className='w-72 top-2 left-2 fixed sidebar dark:bg-secondary-dark-bg bg-white'>
+              <Sidebar />
+            </div>
+          ) : (
+            <div className='w-0 top-2 left-2 fixed sidebar dark:bg-secondary-dark-bg bg-white'>
+              <Sidebar />
+            </div>
+          )}
+          <div className={
+            `dark:bg-main-bg bg-main-bg min-h-screen w-full ${activeMenu ?
+              "md:ml-72" :
+              "flex-2"
+            }`
+          }>
+            <div className='fixed md:static bg-main-bg dark:bg-main-dark
               navbar w-full'>
-                <Navbar />
-              </div>
+              <Navbar />
             </div>
             <div>
               <Routes>

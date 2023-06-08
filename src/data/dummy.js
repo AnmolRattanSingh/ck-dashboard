@@ -44,10 +44,6 @@ export const links = [
           name: 'calendar',
           icon: <AiOutlineCalendar />,
         },
-        {
-          name: 'kanban',
-          icon: <BsKanban />,
-        },
       ],
     },
     {
