@@ -91,59 +91,6 @@ export const links = [
   },
 ];
 
-export const ridersData = [
-  {
-    RiderID: 10249,
-    Name: 'Person 2',
-    StartLocation: 'loc1',
-    EndLocation: 'loc2',
-    Accommodations: 'Wheelchair assistance',
-    tags: {
-      Status: 'pending',
-    }
-  },
-  {
-    RiderID: 10250,
-    Name: 'Person 3',
-    StartLocation: 'loc1',
-    EndLocation: 'loc2',
-    Accommodations: '...',
-    tags: {
-      Status: 'pending',
-    }
-  },
-  {
-    RiderID: 10251,
-    Name: 'Person 4',
-    StartLocation: 'loc1',
-    EndLocation: 'loc2',
-    Accommodations: '...',
-    tags: {
-      Status: 'pending',
-    }
-  },
-  {
-    RiderID: 10252,
-    Name: 'Person 5',
-    StartLocation: 'loc1',
-    EndLocation: 'loc2',
-    Accommodations: '...',
-    tags: {
-      Status: 'pending',
-    }
-  },
-  {
-    RiderID: 10253,
-    Name: 'Person 6',
-    StartLocation: 'loc1',
-    EndLocation: 'loc2',
-    Accommodations: '...',
-    tags: {
-      Status: 'completed',
-    }
-  },
-];
-
 export const colorMaps = {
   pending: 'volcano',
   completed: 'green',
@@ -151,42 +98,44 @@ export const colorMaps = {
 
 export const ridersGrid = [
   {
-    field: 'RiderID',
     title: 'Rider ID',
+    dataIndex: 'RiderID',
     width: 70,
   },
   {
-    field: 'Name',
     title: 'Name',
+    dataIndex: 'Name',
     width: 120,
   },
   {
-    field: 'StartLocation',
     title: 'Start Location',
+    dataIndex: 'RouteLocs',
     width: 120,
   },
   {
-    field: 'EndLocation',
-    title: 'End Location',
-    width: 120,
-  },
-  {
-    field: 'Accommodations',
     title: 'Accommodations',
+    dataIndex: 'accommodations',
     width: 120,
+    render: (_, { accomodations }) => {
+      // take objects from list and map to a string
+      return accomodations.map((accomodation, index) => (
+        <p key={index}>{accomodation}</p>
+      ));
+    }
   },
   {
-    field: 'Status',
     title: 'Status',
+    dataIndex: 'status',
+    key: 'status',
     width: 120,
-    render: (_, {tags} ) => {
+    render: (_, { tags }) => {
       // set color from colorMaps and map each key value pair to a Tag
       return Object.entries(tags).map(([key, value]) => (
         <Tag color={colorMaps[value]} key={key}>
           {value}
         </Tag>
       ));
-    },
+    }
   },
 ];
 

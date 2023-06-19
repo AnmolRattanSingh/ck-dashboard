@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
+import { auth } from '../config/firebase';
 import { AiOutlineMenu } from "react-icons/ai";
 import { FiShoppingCart } from "react-icons/fi";
+import { CgProfile } from "react-icons/cg";
 import { BsChatLeft } from "react-icons/bs";
 import { RiNotification3Line } from "react-icons/ri";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { Tooltip } from "antd";
-import avatar from "../data/avatar.jpg";
 import { Cart, Chat, Notification, UserProfile } from ".";
 import { useStateContext } from "../contexts/ContextProvider";
 
@@ -81,13 +82,21 @@ const Navbar = () => {
                         className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
                         onClick={() => handleClick("userProfile")}
                     >
-                        <img className="rounded-full w-8 h-8" src={avatar} />
-                        <p>
-                            <span className="text-gray-400 text-14">Hi, </span>
-                            <span className="text-gray-400 fond-bold ml-1 text-14">
-                                Anmol
-                            </span>
-                        </p>
+                        {
+                            auth.currentUser ? (
+                                <>
+                                <img className="rounded-full w-8 h-8" src={auth.currentUser.photoURL} />
+                                <span className="text-gray-500 fond-bold text-14">
+                                    {auth.currentUser.displayName}
+                                </span>
+                                </>
+                            ) : (
+                                <>
+                                <CgProfile size={20} />
+                                <span className="text-gray-500 fond-bold text-14">Log in </span>
+                                </>
+                            )
+                        }
                         <MdKeyboardArrowDown
                             className="text-gray-400 text-14"
                             size={25}
