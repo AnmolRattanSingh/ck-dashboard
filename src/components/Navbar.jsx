@@ -47,15 +47,17 @@ const Navbar = () => {
     }, [screenSize])
 
     return (
-        <div className="flex justify-between p-3 md:ml-6 md:mr-6 relative">
-            <NavButton
-                title="Menu"
-                customFunc={() =>
-                    setActiveMenu((prevActiveMenu) => !prevActiveMenu)
-                }
-                color="black"
-                icon={<AiOutlineMenu size={20} />}
-            />
+        <div className={`flex ${activeMenu ? 'justify-end' : 'justify-between'} p-3 md:ml-6 md:mr-6 relative`}>
+            {!activeMenu && (
+                <NavButton
+                    title="Menu"
+                    customFunc={() =>
+                        setActiveMenu((prevActiveMenu) => !prevActiveMenu)
+                    }
+                    color="black"
+                    icon={<AiOutlineMenu size={20} />}
+                />
+            )}
             <div className="flex">
                 <NavButton
                     title="Cart"
@@ -85,15 +87,15 @@ const Navbar = () => {
                         {
                             auth.currentUser ? (
                                 <>
-                                <img className="rounded-full w-8 h-8" src={auth.currentUser.photoURL} />
-                                <span className="text-gray-500 fond-bold text-14">
-                                    {auth.currentUser.displayName}
-                                </span>
+                                    <img className="rounded-full w-8 h-8" src={auth.currentUser.photoURL} />
+                                    <span className="text-gray-500 fond-bold text-14">
+                                        {auth.currentUser.displayName}
+                                    </span>
                                 </>
                             ) : (
                                 <>
-                                <CgProfile size={20} />
-                                <span className="text-gray-500 fond-bold text-14">Log in </span>
+                                    <CgProfile size={20} />
+                                    <span className="text-gray-500 fond-bold text-14">Log in </span>
                                 </>
                             )
                         }

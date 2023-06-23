@@ -1,61 +1,97 @@
 import { useEffect, useState } from 'react';
-import { Table, Menu, Dropdown, Button, Space } from 'antd';
-import { EditOutlined, DeleteOutlined, ExportOutlined, FileExcelOutlined, FilePdfOutlined } from '@ant-design/icons';
-import { ridersGrid } from '../data/dummy';
-import { Header } from '../components';
-import { db } from '../config/firebase'
-import { getDocs, collection } from 'firebase/firestore';
+import { Header, PersonSelection } from '../components';
+import { db } from '../config/firebase';
+import { getDocs, collection, addDoc } from 'firebase/firestore';
 
 const NewRides = () => {
-  const [loading, setLoading] = useState(true); // New loading state
+  const [loading, setLoading] = useState(true);
+  const [riderData, setRiderData] = useState([]);
+  const [driverData, setDriverData] = useState([]);
+  const [selectedRider, setSelectedRider] = useState(null);
+  const [selectedDriver, setSelectedDriver] = useState(null);
+  const [driverMenuVisible, setDriverMenuVisible] = useState(false);
 
-  const [data, setData] = useState([]);
+  const NewRidesRef = collection(db, 'NewRides');
+  const NewDriversRef = collection(db, 'NewDrivers');
 
-  const dataCollectionRef = collection(db, 'NewRides');
+  const onClickEdit = async () => {
+    try {
+      await addDoc(NewRidesRef, {
+        Name: 'Person 3 ',
+        RouteLocs: 'New Route 2',
+        accommodations: ['Accommodation 3', 'Accommodation 4'],
+        tags: {
+          status: 'pending',
+        },
+      });
+      console.log('Document successfully written!');
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleRideClick = (ride) => {
+    setSelectedRider(ride);
+  };
+
+  const handleDriverClick = (driver) => {
+    setSelectedDriver(driver);
+  };
+
+  const handlePairClick = () => {
+    setDriverMenuVisible(true);
+  };
 
   useEffect(() => {
     const getData = async () => {
       try {
-        setLoading(true); // Set loading to true before fetching data
-        const dataSnap = await getDocs(dataCollectionRef);
-        const data = dataSnap.docs.map((doc, index) => ({
+        setLoading(true);
+        const riderDataSnap = await getDocs(NewRidesRef);
+        const driverDataSnap = await getDocs(NewDriversRef);
+        const riderData = riderDataSnap.docs.map((doc, index) => ({
           ...doc.data(),
           id: doc.id,
           key: index,
         }));
-        setData(data);
+        const driverData = driverDataSnap.docs.map((doc, index) => ({
+          ...doc.data(),
+          id: doc.id,
+          key: index,
+        }));
+        setRiderData(riderData);
+        setDriverData(driverData);
       } catch (err) {
         console.error(err);
       } finally {
-        setLoading(false); // Set loading to false after data is fetched
+        setLoading(false);
       }
     };
     getData();
   }, []);
 
-  const columns = ridersGrid.map((column, index) => ({
-    ...column,
-    key: index,
-  }));
-
+  // TODO: set outermost div to justify-evenly when sidebar is invisible
   return (
-    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
+    <div className="m-2 md:m-10 mt-12 p-2 md:p-10 bg-white rounded-3xl">
       <Header category="Schedule" title="New Rides" />
-      <div className="mt-4">
-        <Button type="default" icon={<EditOutlined />} className="mr-2">Edit</Button>
-        <Button type="default" icon={<DeleteOutlined />} className="mr-2">Delete</Button>
-        <Button type="default" icon={<ExportOutlined />} className="mr-2">Export</Button>
-        <Button type="default" icon={<FileExcelOutlined />} className="mr-2">Excel</Button>
-        <Button type="default" icon={<FilePdfOutlined />} className="mr-2">PDF</Button>
+      <div className="flex w-full">
+        <PersonSelection
+          riderData={riderData}
+          handleMenuClick={handleRideClick}
+          handlePairClick={handlePairClick}
+          selectedPerson={selectedRider}
+          loading={loading}
+        />
+        {driverMenuVisible && (
+          <PersonSelection
+            riderData={driverData}
+            handleMenuClick={handleDriverClick}
+            handlePairClick={handlePairClick}
+            selectedPerson={selectedDriver}
+            loading={loading}
+            isDriver={true}
+          />
+        )}
       </div>
-      <div className="mb-4"></div>
-      <Table
-        dataSource={data}
-        columns={columns}
-        pagination={{ pageSize: 10 }}
-        bordered
-        loading={loading} // Pass the loading state to the Table component
-      />
     </div>
   );
 };

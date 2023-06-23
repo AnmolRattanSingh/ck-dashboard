@@ -9,6 +9,7 @@ import { GiLouvrePyramid } from 'react-icons/gi';
 import { AiFillCar } from 'react-icons/ai';
 import { GrUserNew } from 'react-icons/gr';
 import { Tag } from 'antd';
+import { Tooltip } from 'antd';
 
 export const gridOrderImage = (props) => (
   <div>
@@ -98,35 +99,28 @@ export const colorMaps = {
 
 export const ridersGrid = [
   {
-    title: 'Rider ID',
-    dataIndex: 'RiderID',
-    width: 70,
-  },
-  {
     title: 'Name',
     dataIndex: 'Name',
     width: 120,
   },
   {
-    title: 'Start Location',
+    title: 'Ride Route',
     dataIndex: 'RouteLocs',
     width: 120,
+    render: (RouteLocs) => (
+      <Tooltip placement="topLeft" title={RouteLocs}>
+        {RouteLocs}
+      </Tooltip>
+    ),
   },
   {
     title: 'Accommodations',
     dataIndex: 'accommodations',
     width: 120,
-    render: (_, { accomodations }) => {
-      // take objects from list and map to a string
-      return accomodations.map((accomodation, index) => (
-        <p key={index}>{accomodation}</p>
-      ));
-    }
   },
   {
     title: 'Status',
     dataIndex: 'status',
-    key: 'status',
     width: 120,
     render: (_, { tags }) => {
       // set color from colorMaps and map each key value pair to a Tag
@@ -137,6 +131,10 @@ export const ridersGrid = [
       ));
     }
   },
+  {
+    dataIndex: 'edit',
+    width: 10,
+  }
 ];
 
 export const userProfileData = [
