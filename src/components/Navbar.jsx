@@ -87,9 +87,15 @@ const Navbar = () => {
                         {
                             auth.currentUser ? (
                                 <>
-                                    <img className="rounded-full w-8 h-8" src={auth.currentUser.photoURL} />
+                                    {
+                                        auth.currentUser.photoURL ? (
+                                            <img className="rounded-full w-8 h-8" src={auth.currentUser.photoURL} />
+                                        ) : (
+                                            <CgProfile size={20} />
+                                        )
+                                    }
                                     <span className="text-gray-500 fond-bold text-14">
-                                        {auth.currentUser.displayName}
+                                        {auth.currentUser.displayName ? auth.currentUser.displayName : auth.currentUser.email}
                                     </span>
                                 </>
                             ) : (

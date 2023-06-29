@@ -1,37 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { auth, googleAuth } from '../config/firebase';
-import { signInWithPopup, signOut } from 'firebase/auth';
-import { MdOutlineCancel } from 'react-icons/md';
-import { userProfileData } from '../data/dummy';
+import { auth } from '../config/firebase';
+import { signOut } from 'firebase/auth';
 import { useStateContext } from '../contexts/ContextProvider';
 import { Button } from 'antd';
+import { AiOutlineUser } from 'react-icons/ai';
 
 const UserProfile = () => {
-  const { currentColor } = useStateContext();
-  const [userProfile, setUserProfile] = useState(null);
-
-  useEffect(() => {
-    const fetchUserProfile = () => {
-      if (auth.currentUser) {
-        setUserProfile({
-          displayName: auth.currentUser.displayName,
-          email: auth.currentUser.email,
-          photoURL: auth.currentUser.photoURL,
-        });
-      }
-    };
-
-    fetchUserProfile();
-  }, []);
-
-  const signInWithGoogle = async () => {
-    try {
-      await signInWithPopup(auth, googleAuth);
-      window.location.reload();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { userProfile, setUserProfile, currentColor } = useStateContext();
 
   const logout = async () => {
     try {
@@ -44,32 +18,30 @@ const UserProfile = () => {
 
   return (
     <div className="nav-item absolute right-1 top-16 bg-white dark:bg-[#42464D] p-4 rounded-lg w-96 shadow">
-      {auth?.currentUser ? (
-        <div className="flex justify-evenly">
-          <img
-            src={userProfile?.photoURL}
-            alt="avatar"
-            className="w-10 h-10 rounded-full"
-          />
-          <div>
-            <p className="text-sm font-medium text-gray-800 dark:text-white">
-              {userProfile?.displayName}
-            </p>
-            <p className="text-xs font-light text-gray-500">
-              {userProfile?.email}
-            </p>
-          </div>
-          <Button type="default" onClick={logout}>
-            Log out
-          </Button>
+      <div className="flex justify-evenly">
+        {
+          userProfile?.photoURL ? (
+            <img
+              src={userProfile?.photoURL}
+              alt="avatar"
+              className="w-10 h-10 rounded-full"
+            />
+          ) : (
+            <AiOutlineUser size={30} />
+          )
+        }
+        <div>
+          <p className="text-sm font-medium text-gray-800 dark:text-white">
+            {userProfile?.displayName}
+          </p>
+          <p className="text-xs font-light text-gray-500">
+            {userProfile?.email}
+          </p>
         </div>
-      ) : (
-        <div className="flex justify-center">
-          <Button type="default" onClick={signInWithGoogle}>
-            Sign In with Google
-          </Button>
-        </div>
-      )}
+        <Button type="default" onClick={logout}>
+          Log out
+        </Button>
+      </div>
     </div>
   );
 };
